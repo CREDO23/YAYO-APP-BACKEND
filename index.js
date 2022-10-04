@@ -6,17 +6,19 @@ const createError = require("http-errors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+//Connection to dataase
+require("./scr/configs/database");
+
 //Middleware
 app.use(morgan(":method :url :status :response-time ms"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Routes
 app.get("/", (req, res, next) => {
   res.status(200).json("Salut les amis");
 });
 
-//Middleware Error Handling
+//Error Handling
 app.use((req, res, next) => {
   next(createError.NotFound("Page Not Found"));
 });
@@ -31,6 +33,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, (err) => {
+  if (err) console.log("Internal Server Error");
   console.log(`Listen on ${PORT}`);
 });
