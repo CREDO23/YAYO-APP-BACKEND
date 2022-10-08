@@ -1,5 +1,4 @@
 const { Schema, default: mongoose } = require("mongoose");
-const jwt = require("jsonwebtoken");
 
 const customerSchema = new Schema(
   {
@@ -42,13 +41,11 @@ const customerSchema = new Schema(
     email: {
       type: String,
       required: [true, "The email must be filled out"],
-      unique: [true, "email already exists"],
       trim: true,
     },
     password: {
       type: String,
       required: [true, "The password must be filled out"],
-      unique: [true, "Password already exists"],
       trim: true,
     },
     tickets: {
@@ -73,4 +70,4 @@ const customerSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Customer", customerSchema);
+module.exports = Customer = mongoose.model("Customer", customerSchema);

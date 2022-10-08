@@ -1,5 +1,5 @@
 const { Schema, default: mongoose } = require("mongoose");
-const jwt = require("jsonwebtoken");
+const bycrpt = require("bcrypt");
 
 const partnerSchema = new Schema(
   {
@@ -37,13 +37,11 @@ const partnerSchema = new Schema(
     email: {
       type: String,
       required: [true, "The email must be filled out"],
-      unique: [true, "email already exists"],
       trim: true,
     },
     password: {
       type: String,
       required: [true, "The password must be filled out"],
-      unique: [true, "Password already exists"],
       trim: true,
     },
     tickets: {

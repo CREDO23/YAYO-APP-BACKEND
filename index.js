@@ -2,9 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const morgan = require("morgan");
 const createError = require("http-errors");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
+const usersRoutes = require("./scr/routes/customer");
 
 //Connection to dataase
 require("./scr/configs/database");
@@ -17,6 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res, next) => {
   res.status(200).json("Salut les amis");
 });
+
+app.use("/users", usersRoutes);
 
 //Error Handling
 app.use((req, res, next) => {
