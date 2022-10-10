@@ -21,17 +21,17 @@ const partnerSchema = new Schema(
       quartier: {
         type: String,
         trim: true,
-        required: [true, "Complete the your adress"],
+        required: [true, "Complete your adress"],
       },
       ville: {
         type: String,
         trim: true,
-        required: [true, "Complete the your adress"],
+        required: [true, "Complete your adress"],
       },
       avenue: {
         type: String,
         trim: true,
-        required: [true, "Complete the your adress"],
+        required: [true, "Complete your adress"],
       },
     },
     email: {
@@ -68,10 +68,8 @@ const partnerSchema = new Schema(
       required: [true, "The ShopBrandName must be filled out"],
     },
     products: {
-      type: {
-        type: [Schema.Types.ObjectId],
-        ref: "Product",
-      },
+      type: [Schema.Types.ObjectId],
+      ref: "Product",
       required: [true, "The product must be filled out"],
     },
   },

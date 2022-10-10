@@ -18,6 +18,25 @@ const userRegisterSchema = joi.object({
   notificationsId: joi.string(),
 });
 
+const partnerRegisterSchema = joi.object({
+  userName: joi.string().required(),
+  firstName: joi.string(),
+  lastName: joi.string(),
+  shopAdress: joi.object().keys({
+    quartier: joi.string().required(),
+    ville: joi.string().required(),
+    avenue: joi.string().required(),
+  }),
+  shopBrandName : joi.string().required(),
+  email: joi.string().required().email(),
+  password: joi.string().required(),
+  tickets: joi.object(),
+  notifications: joi.object(),
+  notificationsId: joi.string(),
+  products : joi.array().required()
+});
+
 module.exports = {
   userRegisterSchema,
+  partnerRegisterSchema
 };

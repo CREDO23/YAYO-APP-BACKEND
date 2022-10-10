@@ -5,6 +5,7 @@ const createError = require("http-errors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const usersRoutes = require("./scr/routes/customer");
+const partnerRoutes = require("./scr/routes/partner");
 
 //Connection to dataase
 require("./scr/configs/database");
@@ -19,8 +20,8 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/users", usersRoutes);
+app.use("/partners", partnerRoutes);
 
-//Error Handling
 app.use((req, res, next) => {
   next(createError.NotFound("Page Not Found"));
 });
