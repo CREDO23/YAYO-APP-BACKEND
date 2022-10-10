@@ -9,7 +9,7 @@ const getAllUsers = async (req, res, next) => {
   try {
     const customers = await Customer.find().catch((error) => next(error));
 
-    if (customers == null) {
+    if (customers == null || !customers[0] ) {
       next(createError.NotFound("There are not Users yet"));
     } else if (customers) {
       res.json(customers);
