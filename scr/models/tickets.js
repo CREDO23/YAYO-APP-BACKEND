@@ -9,16 +9,21 @@ const ticketSchema = new Schema(
     categorie: {
       type: Schema.Types.ObjectId,
       ref: "TicketCategorie",
+      required: [true, "The categorie is required"],
     },
     statut: {
       type: String,
       enum: ["Created", "Played", "Delivered"],
+      default: "Created",
     },
     value: {
       type: Schema.Types.ObjectId,
       ref: "Product",
     },
-    notified: Boolean,
+    notified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

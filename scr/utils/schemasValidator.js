@@ -27,16 +27,23 @@ const partnerRegisterSchema = joi.object({
     ville: joi.string().required(),
     avenue: joi.string().required(),
   }),
-  shopBrandName : joi.string().required(),
+  shopBrandName: joi.string().required(),
   email: joi.string().required().email(),
   password: joi.string().required(),
   tickets: joi.object(),
   notifications: joi.object(),
   notificationsId: joi.string(),
-  products : joi.array().required()
+  products: joi.array().required(),
+});
+
+const productRegisterSchema = joi.object({
+  brandName: joi.string().required(),
+  image: joi.string().required(),
+  galery: joi.array(),
 });
 
 module.exports = {
   userRegisterSchema,
-  partnerRegisterSchema
+  partnerRegisterSchema,
+  productRegisterSchema,
 };
