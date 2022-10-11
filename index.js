@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 const usersRoutes = require("./scr/routes/customer");
 const partnerRoutes = require("./scr/routes/partner");
 const productRoutes = require("./scr/routes/product");
+const ticketCategorieRoutes = require("./scr/routes/ticketCategorie");
 
 //Connection to dataase
 require("./scr/configs/database");
@@ -23,6 +24,7 @@ app.get("/", (req, res, next) => {
 app.use("/users", usersRoutes);
 app.use("/partners", partnerRoutes);
 app.use("/products", productRoutes);
+app.use("/ticketCategories", ticketCategorieRoutes);
 //Error handler
 app.use((req, res, next) => {
   next(createError.NotFound("Page Not Found"));

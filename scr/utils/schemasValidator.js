@@ -42,8 +42,14 @@ const productRegisterSchema = joi.object({
   galery: joi.array(),
 });
 
+const ticketCategorieRegSchema = joi.object({
+  brandName: joi.string().required(),
+  value: joi.string().required(),
+});
+
 module.exports = {
   userRegisterSchema,
   partnerRegisterSchema,
   productRegisterSchema,
+  ticketCategorieRegSchema,
 };

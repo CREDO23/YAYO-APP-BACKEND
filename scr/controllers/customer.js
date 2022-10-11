@@ -88,11 +88,11 @@ const createUser = async (req, res, next) => {
     const password = await bcrpt.hash(result.password, salt);
     const newUser = new Customer({ ...result, password });
 
-    await newUser.save();
+    const savedUser = await newUser.save();
 
     res.json({
-      message: `The user ${newUser.userName} have been successful created `,
-      data: newUser,
+      message: `Created successful`,
+      data: savedUser,
       success: true,
     });
   } catch (error) {
