@@ -86,11 +86,11 @@ const createPartner = async (req, res, next) => {
     const password = await bcrpt.hash(result.password, salt);
     const newPartner = new Partner({ ...result, password });
 
-    await newPartner.save();
+    const savedPartner = await newPartner.save();
 
     res.json({
-      message: `The partner ${newPartner.userName} have been successful created `,
-      data: newPartner,
+      message: `Created successful`,
+      data: savedPartner,
       success: true,
     });
   } catch (error) {
