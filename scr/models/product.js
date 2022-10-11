@@ -4,8 +4,12 @@ const productSchema = new Schema({
   brandName: {
     type: String,
     trim: true,
+    required: [true, "The brandName is required"],
   },
-  image: String,
+  image: {
+    type: String,
+    required: [true, "The image is required"],
+  },
   galery: [String],
 });
 

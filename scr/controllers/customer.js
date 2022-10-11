@@ -9,10 +9,10 @@ const getAllUsers = async (req, res, next) => {
   try {
     const customers = await Customer.find().catch((error) => next(error));
 
-    if (customers == null || !customers[0] ) {
+    if (customers == null || !customers[0]) {
       next(createError.NotFound("There are not Users yet"));
     } else if (customers) {
-      res.json(customers);
+      res.json({ data: customers, success: true });
     }
   } catch (error) {
     next(error);
@@ -31,7 +31,7 @@ const getUser = async (req, res, next) => {
       if (customer == null) {
         next(createError.NotFound("This User doesn't exist"));
       } else if (customer) {
-        res.json(customer);
+        res.json({ data: customer, success: true });
       }
     } catch (error) {
       next(error);
@@ -53,7 +53,11 @@ const updateUser = async (req, res, next) => {
         }).catch((error) => next(error));
 
         if (updatedUser) {
-          res.json({ message: "Updated successful", updatedUser });
+          res.json({
+            message: "Updated successful",
+            data: updatedUser,
+            success: true,
+          });
         } else {
           throw createError.NotFound("This user doesn't exist");
         }
@@ -89,6 +93,7 @@ const createUser = async (req, res, next) => {
     res.json({
       message: `The user ${newUser.userName} have been successful created `,
       data: newUser,
+      success: true,
     });
   } catch (error) {
     if (error.isJoi) error.status = 422;
@@ -105,7 +110,11 @@ const deleteUser = async (req, res, next) => {
       );
 
       if (deletedUser) {
-        res.json({ message: "Deleted successful", deletedUser });
+        res.json({
+          message: "Deleted successful",
+          data: deletedUser,
+          success: true,
+        });
       } else {
         throw createError.NotFound("This user doesn't exist");
       }
