@@ -1,15 +1,15 @@
-const createError = require("http-errors");
-const { isValidObjectId } = require("mongoose");
-const Product = require("../models/product");
-const utils = require("../utils/index");
-const { productRegisterSchema } = require("../utils/schemasValidator");
+const createError = require('http-errors');
+const { isValidObjectId } = require('mongoose');
+const Product = require('../models/product');
+const utils = require('../utils/index');
+const { productRegisterSchema } = require('../utils/schemasValidator');
 
 const getAllProducts = async (req, res, next) => {
   try {
     const products = await Product.find().catch((error) => next(error));
 
     if (products == null || !products[0]) {
-      next(createError.NotFound("There are not Products yet"));
+      next(createError.NotFound('There are not Products yet'));
     } else if (products) {
       res.json({ data: products, success: true });
     }
@@ -34,7 +34,7 @@ const getProduct = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -51,7 +51,7 @@ const updateProduct = async (req, res, next) => {
 
         if (updatedProduct) {
           res.json({
-            message: "Updated successful",
+            message: 'Updated successful',
             data: updatedProduct,
             success: true,
           });
@@ -62,10 +62,10 @@ const updateProduct = async (req, res, next) => {
         next(error);
       }
     } else {
-      next(createError.NotAcceptable("Please , mention the fields to update"));
+      next(createError.NotAcceptable('Please , mention the fields to update'));
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -78,7 +78,7 @@ const createProduct = async (req, res, next) => {
     }).catch((error) => next(error));
 
     if (isExist) {
-      throw createError.Conflict("This Product is already exist");
+      throw createError.Conflict('This Product is already exist');
     }
 
     const newPoduct = new Product({ ...result });
@@ -101,12 +101,12 @@ const deleteProduct = async (req, res, next) => {
   if (isValidObjectId(id)) {
     try {
       const deletedProduct = await Product.findByIdAndDelete(id).catch(
-        (error) => next(error)
+        (error) => next(error),
       );
 
       if (deletedProduct) {
         res.json({
-          message: "Deleted successful",
+          message: 'Deleted successful',
           data: deletedProduct,
           success: true,
         });
@@ -117,7 +117,7 @@ const deleteProduct = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 

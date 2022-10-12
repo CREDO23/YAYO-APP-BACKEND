@@ -1,17 +1,17 @@
-const createError = require("http-errors");
-const { isValidObjectId } = require("mongoose");
-const TicketCategorie = require("../models/ticketCategorie");
-const utils = require("../utils/index");
-const { ticketCategorieRegSchema } = require("../utils/schemasValidator");
+const createError = require('http-errors');
+const { isValidObjectId } = require('mongoose');
+const TicketCategorie = require('../models/ticketCategorie');
+const utils = require('../utils/index');
+const { ticketCategorieRegSchema } = require('../utils/schemasValidator');
 
 const getAllTicketCategorie = async (req, res, next) => {
   try {
     const ticketCategories = await TicketCategorie.find().catch((error) =>
-      next(error)
+      next(error),
     );
 
     if (ticketCategories == null || !ticketCategories[0]) {
-      next(createError.NotFound("There are not Ticket categories yet"));
+      next(createError.NotFound('There are not Ticket categories yet'));
     } else if (ticketCategories) {
       res.json({ data: ticketCategories, success: true });
     }
@@ -26,7 +26,7 @@ const getTicketCategorie = async (req, res, next) => {
   if (isValidObjectId(id)) {
     try {
       const ticketCategorie = await TicketCategorie.findById(id).catch(
-        (error) => next(error)
+        (error) => next(error),
       );
 
       if (ticketCategorie == null) {
@@ -38,7 +38,7 @@ const getTicketCategorie = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -54,12 +54,12 @@ const updateTicketCategorie = async (req, res, next) => {
           updated,
           {
             new: true,
-          }
+          },
         ).catch((error) => next(error));
 
         if (updatedTicketCategorie) {
           res.json({
-            message: "Updated successful",
+            message: 'Updated successful',
             data: updatedTicketCategorie,
             success: true,
           });
@@ -70,10 +70,10 @@ const updateTicketCategorie = async (req, res, next) => {
         next(error);
       }
     } else {
-      next(createError.NotAcceptable("Please , mention the fields to update"));
+      next(createError.NotAcceptable('Please , mention the fields to update'));
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -86,7 +86,7 @@ const createTicketCategorie = async (req, res, next) => {
     }).catch((error) => next(error));
 
     if (isExist) {
-      throw createError.Conflict("This Ticket categorie is already exist");
+      throw createError.Conflict('This Ticket categorie is already exist');
     }
 
     const newTicketCategorie = new TicketCategorie({ ...result });
@@ -109,12 +109,12 @@ const deleteTicketCategorie = async (req, res, next) => {
   if (isValidObjectId(id)) {
     try {
       const deletedTicketCategorie = await TicketCategorie.findByIdAndDelete(
-        id
+        id,
       ).catch((error) => next(error));
 
       if (deletedTicketCategorie) {
         res.json({
-          message: "Deleted successful",
+          message: 'Deleted successful',
           data: deletedTicketCategorie,
           success: true,
         });
@@ -125,7 +125,7 @@ const deleteTicketCategorie = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 

@@ -1,4 +1,4 @@
-const joi = require("@hapi/joi");
+const joi = require('@hapi/joi');
 
 const userRegisterSchema = joi.object({
   userName: joi.string().required(),

@@ -1,16 +1,16 @@
-const createError = require("http-errors");
-const { isValidObjectId } = require("mongoose");
-const Partner = require("../models/partner");
-const utils = require("../utils/index");
-const bcrpt = require("bcrypt");
-const { partnerRegisterSchema } = require("../utils/schemasValidator");
+const createError = require('http-errors');
+const { isValidObjectId } = require('mongoose');
+const Partner = require('../models/partner');
+const utils = require('../utils/index');
+const bcrpt = require('bcrypt');
+const { partnerRegisterSchema } = require('../utils/schemasValidator');
 
 const getAllPartners = async (req, res, next) => {
   try {
     const patners = await Partner.find().catch((error) => next(error));
 
     if (patners == null || !patners[0]) {
-      next(createError.NotFound("There are not Partners yet"));
+      next(createError.NotFound('There are not Partners yet'));
     } else if (patners) {
       res.json({ data: patners, success: true });
     }
@@ -35,7 +35,7 @@ const getPartner = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -52,7 +52,7 @@ const updatePartner = async (req, res, next) => {
 
         if (updatedPartner) {
           res.json({
-            message: "Updated successful",
+            message: 'Updated successful',
             data: updatedPartner,
             success: true,
           });
@@ -63,10 +63,10 @@ const updatePartner = async (req, res, next) => {
         next(error);
       }
     } else {
-      next(createError.NotAcceptable("Please , mention the fields to update"));
+      next(createError.NotAcceptable('Please , mention the fields to update'));
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -75,11 +75,11 @@ const createPartner = async (req, res, next) => {
     const result = await partnerRegisterSchema.validateAsync(req.body);
 
     const isExist = await Partner.findOne({ userName: result.userName }).catch(
-      (error) => next(error)
+      (error) => next(error),
     );
 
     if (isExist) {
-      throw createError.Conflict("This partner is already exist");
+      throw createError.Conflict('This partner is already exist');
     }
 
     const salt = await bcrpt.genSalt(10);
@@ -104,12 +104,12 @@ const deletePartner = async (req, res, next) => {
   if (isValidObjectId(id)) {
     try {
       const deletedPartner = await Partner.findByIdAndDelete(id).catch(
-        (error) => next(error)
+        (error) => next(error),
       );
 
       if (deletedPartner) {
         res.json({
-          message: "Deleted successful",
+          message: 'Deleted successful',
           data: deletedPartner,
           success: true,
         });
@@ -120,7 +120,7 @@ const deletePartner = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
