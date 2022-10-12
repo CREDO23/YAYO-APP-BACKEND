@@ -14,9 +14,9 @@ dotenv.config();
 require('./configs/database');
 
 //Middleware
-app.use(morgan(':method :url :status :response-time ms'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+                app.use(morgan(':method :url :status :response-time ms'));
+                app.use(express.json());
+                app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.status(200).json('App is running');
