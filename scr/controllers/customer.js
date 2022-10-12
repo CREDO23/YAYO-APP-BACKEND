@@ -1,16 +1,16 @@
-const createError = require("http-errors");
-const { isValidObjectId } = require("mongoose");
-const Customer = require("../models/customer");
-const utils = require("../utils/index");
-const bcrpt = require("bcrypt");
-const { userRegisterSchema } = require("../utils/schemasValidator");
+const createError = require('http-errors');
+const { isValidObjectId } = require('mongoose');
+const Customer = require('../models/customer');
+const utils = require('../utils/index');
+const bcrpt = require('bcrypt');
+const { userRegisterSchema } = require('../utils/schemasValidator');
 
 const getAllUsers = async (req, res, next) => {
   try {
     const customers = await Customer.find().catch((error) => next(error));
 
     if (customers == null || !customers[0]) {
-      next(createError.NotFound("There are not Users yet"));
+      next(createError.NotFound('There are not Users yet'));
     } else if (customers) {
       res.json({ data: customers, success: true });
     }
@@ -25,7 +25,7 @@ const getUser = async (req, res, next) => {
   if (isValidObjectId(id)) {
     try {
       const customer = await Customer.findById(id).catch((error) =>
-        next(error)
+        next(error),
       );
 
       if (customer == null) {
@@ -37,7 +37,7 @@ const getUser = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -54,7 +54,7 @@ const updateUser = async (req, res, next) => {
 
         if (updatedUser) {
           res.json({
-            message: "Updated successful",
+            message: 'Updated successful',
             data: updatedUser,
             success: true,
           });
@@ -65,10 +65,10 @@ const updateUser = async (req, res, next) => {
         next(error);
       }
     } else {
-      next(createError.NotAcceptable("Please , mention the fields to update"));
+      next(createError.NotAcceptable('Please , mention the fields to update'));
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 
@@ -77,11 +77,11 @@ const createUser = async (req, res, next) => {
     const result = await userRegisterSchema.validateAsync(req.body);
 
     const isExist = await Customer.findOne({ userName: result.userName }).catch(
-      (error) => next(error)
+      (error) => next(error),
     );
 
     if (isExist) {
-      throw createError.Conflict("This user is already exist");
+      throw createError.Conflict('This user is already exist');
     }
 
     const salt = await bcrpt.genSalt(10);
@@ -106,12 +106,12 @@ const deleteUser = async (req, res, next) => {
   if (isValidObjectId(id)) {
     try {
       const deletedUser = await Customer.findByIdAndDelete(id).catch((error) =>
-        next(error)
+        next(error),
       );
 
       if (deletedUser) {
         res.json({
-          message: "Deleted successful",
+          message: 'Deleted successful',
           data: deletedUser,
           success: true,
         });
@@ -122,7 +122,7 @@ const deleteUser = async (req, res, next) => {
       next(error);
     }
   } else {
-    next(createError.BadRequest("Invalid ID"));
+    next(createError.BadRequest('Invalid ID'));
   }
 };
 

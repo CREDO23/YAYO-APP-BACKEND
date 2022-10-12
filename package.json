@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/inde.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon scr/inde.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint" : "eslint src/**/*.js",
+    "lint-fix" : "eslint . scr/**/*.js --fix",
+    "prettier" : "prettier --write scr/**/*.js",
+    "prepare" : "husky install",
+    "precommit" : "yarn prettier && yarn lint-fix",
+    "prepush" : "yarn lint"
   },
   "repository": {
     "type": "git",
@@ -28,5 +34,12 @@
     "mongoose": "^6.6.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^5.40.0",
+    "eslint": "^8.25.0",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
   }
 }
