@@ -47,9 +47,18 @@ const ticketCategorieRegSchema = joi.object({
   value: joi.string().required(),
 });
 
+const ticketRegSchema = joi.object({
+  owner : joi.string() ,
+  categorie : joi.string().required(),
+  statut : joi.string(),
+  value : joi.string(),
+  notified : joi.boolean()
+});
+
 module.exports = {
   userRegisterSchema,
   partnerRegisterSchema,
   productRegisterSchema,
   ticketCategorieRegSchema,
+  ticketRegSchema
 };

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon scr/inde.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint" : "eslint src/**/*.js",
+    "lint" : "eslint scr/**/*.js",
     "lint-fix" : "eslint . scr/**/*.js --fix",
     "prettier" : "prettier --write scr/**/*.js",
     "prepare" : "husky install",
