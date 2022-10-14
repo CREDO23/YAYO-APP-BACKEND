@@ -8,15 +8,16 @@ const usersRoutes = require('./routes/customer');
 const partnerRoutes = require('./routes/partner');
 const productRoutes = require('./routes/product');
 const ticketCategorieRoutes = require('./routes/ticketCategorie');
+const ticketRoutes = require('./routes/ticket')
 dotenv.config();
 
 //Connection to dataase
 require('./configs/database');
 
 //Middleware
-                app.use(morgan(':method :url :status :response-time ms'));
-                app.use(express.json());
-                app.use(express.urlencoded({ extended: true }));
+app.use(morgan(':method :url :status :response-time ms'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.status(200).json('App is running');
@@ -26,6 +27,7 @@ app.use('/users', usersRoutes);
 app.use('/partners', partnerRoutes);
 app.use('/products', productRoutes);
 app.use('/ticketCategories', ticketCategorieRoutes);
+app.use('/ticketS', ticketRoutes);
 //Error handler
 app.use((req, res, next) => {
   next(createError.NotFound('Page Not Found'));
