@@ -2,6 +2,10 @@ const { Schema, default: mongoose } = require('mongoose');
 
 const partnerSchema = new Schema(
   {
+    role: {
+      type: String,
+      default: 'partner',
+    },
     userName: {
       type: String,
       unique: [true, 'userName already exists'],

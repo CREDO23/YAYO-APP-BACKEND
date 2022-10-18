@@ -65,6 +65,11 @@ const adminRegisterSchema = joi.object({
   notificationsId: joi.string(),
 });
 
+const loginVlidation = joi.object({
+  userName: joi.string().required(),
+  password: joi.string().required(),
+});
+
 module.exports = {
   userRegisterSchema,
   partnerRegisterSchema,
@@ -72,4 +77,5 @@ module.exports = {
   ticketCategorieRegSchema,
   ticketRegSchema,
   adminRegisterSchema,
+  loginVlidation,
 };
