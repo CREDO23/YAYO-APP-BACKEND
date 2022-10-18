@@ -2,6 +2,10 @@ const { Schema, default: mongoose } = require('mongoose');
 
 const customerSchema = new Schema(
   {
+    role: {
+      type: String,
+      default: 'customer',
+    },
     userName: {
       type: String,
       unique: [true, 'userName already exists'],

@@ -2,6 +2,11 @@ const { Schema, default: mongoose } = require('mongoose');
 
 const adminSchema = new Schema(
   {
+    role: {
+      type: String,
+      enum: ['superAdmin', 'admin'],
+      default: 'admin',
+    },
     userName: {
       type: String,
       unique: [true, 'userName already exists'],
@@ -15,10 +20,6 @@ const adminSchema = new Schema(
     lastName: {
       type: String,
       trim: true,
-    },
-    superAdmin: {
-      type: Boolean,
-      default: false,
     },
     email: {
       type: String,

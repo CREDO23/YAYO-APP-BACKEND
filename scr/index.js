@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const createError = require('http-errors');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const loginRoute = require('./routes/login');
 const usersRoutes = require('./routes/customer');
 const partnerRoutes = require('./routes/partner');
 const productRoutes = require('./routes/product');
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
   res.status(200).json('App is running');
 });
 
+app.use('/login', loginRoute);
 app.use('/users', usersRoutes);
 app.use('/partners', partnerRoutes);
 app.use('/products', productRoutes);
