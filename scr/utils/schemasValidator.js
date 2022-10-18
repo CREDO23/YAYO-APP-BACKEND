@@ -55,10 +55,21 @@ const ticketRegSchema = joi.object({
   notified: joi.boolean(),
 });
 
+const adminRegisterSchema = joi.object({
+  userName: joi.string().required(),
+  firstName: joi.string(),
+  lastName: joi.string(),
+  email: joi.string().required().email(),
+  password: joi.string().required(),
+  notifications: joi.object(),
+  notificationsId: joi.string(),
+});
+
 module.exports = {
   userRegisterSchema,
   partnerRegisterSchema,
   productRegisterSchema,
   ticketCategorieRegSchema,
   ticketRegSchema,
+  adminRegisterSchema,
 };
