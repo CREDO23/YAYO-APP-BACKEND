@@ -11,7 +11,7 @@ const getAllProducts = async (req, res, next) => {
     if (products == null || !products[0]) {
       next(createError.NotFound('There are not Products yet'));
     } else if (products) {
-      res.json({ data: products, success: true , error : null });
+      res.json({ data: products, success: true, error: null });
     }
   } catch (error) {
     next(error);
@@ -28,7 +28,7 @@ const getProduct = async (req, res, next) => {
       if (product == null) {
         next(createError.NotFound("This Product doesn't exist"));
       } else if (product) {
-        res.json({ data: product, success: true , error : null});
+        res.json({ data: product, success: true, error: null });
       }
     } catch (error) {
       next(error);
@@ -54,7 +54,7 @@ const updateProduct = async (req, res, next) => {
             message: 'Updated successful',
             data: updatedProduct,
             success: true,
-            error : null
+            error: null,
           });
         } else {
           throw createError.NotFound("This Product doesn't exist");
@@ -90,7 +90,7 @@ const createProduct = async (req, res, next) => {
       message: `Created successful`,
       data: savedProduct,
       success: true,
-      error : null
+      error: null,
     });
   } catch (error) {
     if (error.isJoi) error.status = 422;
@@ -111,7 +111,7 @@ const deleteProduct = async (req, res, next) => {
           message: 'Deleted successful',
           data: deletedProduct,
           success: true,
-          error : null
+          error: null,
         });
       } else {
         throw createError.NotFound("This Product doesn't exist");
