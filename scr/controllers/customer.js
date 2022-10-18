@@ -12,7 +12,7 @@ const getAllUsers = async (req, res, next) => {
     if (customers == null || !customers[0]) {
       next(createError.NotFound('There are not Users yet'));
     } else if (customers) {
-      res.json({ data: customers, success: true });
+      res.json({ data: customers, success: true , error : null });
     }
   } catch (error) {
     next(error);
@@ -31,7 +31,7 @@ const getUser = async (req, res, next) => {
       if (customer == null) {
         next(createError.NotFound("This User doesn't exist"));
       } else if (customer) {
-        res.json({ data: customer, success: true });
+        res.json({ data: customer, success: true , error : null});
       }
     } catch (error) {
       next(error);
@@ -57,6 +57,7 @@ const updateUser = async (req, res, next) => {
             message: 'Updated successful',
             data: updatedUser,
             success: true,
+            error : null
           });
         } else {
           throw createError.NotFound("This user doesn't exist");
@@ -94,6 +95,7 @@ const createUser = async (req, res, next) => {
       message: `Created successful`,
       data: savedUser,
       success: true,
+      error : null
     });
   } catch (error) {
     if (error.isJoi) error.status = 422;
@@ -114,6 +116,7 @@ const deleteUser = async (req, res, next) => {
           message: 'Deleted successful',
           data: deletedUser,
           success: true,
+          error : null
         });
       } else {
         throw createError.NotFound("This user doesn't exist");

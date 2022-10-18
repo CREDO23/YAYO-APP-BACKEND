@@ -11,7 +11,7 @@ const getAllTickets = async (req, res, next) => {
     if (tickets == null || !tickets[0]) {
       next(createError.NotFound('There are not Tickets yet'));
     } else if (tickets) {
-      res.json({ data: tickets, success: true });
+      res.json({ data: tickets, success: true  , error : null});
     }
   } catch (error) {
     next(error);
@@ -28,7 +28,7 @@ const getTicket = async (req, res, next) => {
       if (ticket == null) {
         next(createError.NotFound("This Ticket doesn't exist"));
       } else if (ticket) {
-        res.json({ data: ticket, success: true });
+        res.json({ data: ticket, success: true , error : null });
       }
     } catch (error) {
       next(error);
@@ -54,6 +54,7 @@ const updateTicket = async (req, res, next) => {
             message: 'Updated successful',
             data: updatedTicket,
             success: true,
+            error : null
           });
         } else {
           throw createError.NotFound("This Ticket doesn't exist");
@@ -81,6 +82,7 @@ const createTicket = async (req, res, next) => {
       message: `Created successful`,
       data: savedTicket,
       success: true,
+      error : null
     });
   } catch (error) {
     if (error.isJoi) error.status = 422;
@@ -101,6 +103,7 @@ const deleteTicket = async (req, res, next) => {
           message: 'Deleted successful',
           data: deletedTicket,
           success: true,
+          error : null
         });
       } else {
         throw createError.NotFound("This Ticket doesn't exist");

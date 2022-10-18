@@ -12,7 +12,7 @@ const getAllPartners = async (req, res, next) => {
     if (patners == null || !patners[0]) {
       next(createError.NotFound('There are not Partners yet'));
     } else if (patners) {
-      res.json({ data: patners, success: true });
+      res.json({ data: patners, success: true , error : null });
     }
   } catch (error) {
     next(error);
@@ -29,7 +29,7 @@ const getPartner = async (req, res, next) => {
       if (partner == null) {
         next(createError.NotFound("This Partner doesn't exist"));
       } else if (partner) {
-        res.json({ data: partner, success: true });
+        res.json({ data: partner, success: true  , error : null});
       }
     } catch (error) {
       next(error);
@@ -55,6 +55,7 @@ const updatePartner = async (req, res, next) => {
             message: 'Updated successful',
             data: updatedPartner,
             success: true,
+            error : null
           });
         } else {
           throw createError.NotFound("This partner doesn't exist");
@@ -92,6 +93,7 @@ const createPartner = async (req, res, next) => {
       message: `Created successful`,
       data: savedPartner,
       success: true,
+      error : null
     });
   } catch (error) {
     if (error.isJoi) error.status = 422;
@@ -112,6 +114,7 @@ const deletePartner = async (req, res, next) => {
           message: 'Deleted successful',
           data: deletedPartner,
           success: true,
+          error : null
         });
       } else {
         throw createError.NotFound("This partner doesn't exist");

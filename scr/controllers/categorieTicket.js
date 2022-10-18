@@ -13,7 +13,7 @@ const getAllTicketCategorie = async (req, res, next) => {
     if (ticketCategories == null || !ticketCategories[0]) {
       next(createError.NotFound('There are not Ticket categories yet'));
     } else if (ticketCategories) {
-      res.json({ data: ticketCategories, success: true });
+      res.json({ data: ticketCategories, success: true , error : null});
     }
   } catch (error) {
     next(error);
@@ -32,7 +32,7 @@ const getTicketCategorie = async (req, res, next) => {
       if (ticketCategorie == null) {
         next(createError.NotFound("This Ticket categorie doesn't exist"));
       } else if (ticketCategorie) {
-        res.json({ data: ticketCategorie, success: true });
+        res.json({ data: ticketCategorie, success: true , error : null});
       }
     } catch (error) {
       next(error);
@@ -62,6 +62,7 @@ const updateTicketCategorie = async (req, res, next) => {
             message: 'Updated successful',
             data: updatedTicketCategorie,
             success: true,
+            error : null
           });
         } else {
           throw createError.NotFound("This Ticket categorie doesn't exist");
@@ -97,6 +98,7 @@ const createTicketCategorie = async (req, res, next) => {
       message: `Created successful`,
       data: savedTicketCategorie,
       success: true,
+      error : null
     });
   } catch (error) {
     if (error.isJoi) error.status = 422;
@@ -117,6 +119,7 @@ const deleteTicketCategorie = async (req, res, next) => {
           message: 'Deleted successful',
           data: deletedTicketCategorie,
           success: true,
+          error : null
         });
       } else {
         throw createError.NotFound("This Ticket categorie doesn't exist");

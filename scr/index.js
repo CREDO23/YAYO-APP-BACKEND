@@ -40,6 +40,7 @@ app.use((err, req, res, next) => {
     message: err.message || 'Internal Server Error',
     data: null,
     success: false,
+    error : err
   });
 });
 
