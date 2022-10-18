@@ -8,7 +8,8 @@ const usersRoutes = require('./routes/customer');
 const partnerRoutes = require('./routes/partner');
 const productRoutes = require('./routes/product');
 const ticketCategorieRoutes = require('./routes/ticketCategorie');
-const ticketRoutes = require('./routes/ticket')
+const ticketRoutes = require('./routes/ticket');
+const adminRoutes = require('./routes/admin');
 dotenv.config();
 
 //Connection to dataase
@@ -28,6 +29,7 @@ app.use('/partners', partnerRoutes);
 app.use('/products', productRoutes);
 app.use('/ticketCategories', ticketCategorieRoutes);
 app.use('/ticketS', ticketRoutes);
+app.use('/admins', adminRoutes);
 //Error handler
 app.use((req, res, next) => {
   next(createError.NotFound('Page Not Found'));
@@ -40,7 +42,7 @@ app.use((err, req, res, next) => {
     message: err.message || 'Internal Server Error',
     data: null,
     success: false,
-    error : err
+    error: err,
   });
 });
 
