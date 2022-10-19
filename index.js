@@ -1,1 +1,3 @@
-require('./scr/index')
+require('./scr/index');
+
+//(?<=\}),\n\s*(?=\n)

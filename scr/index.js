@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/login', loginRoute);
-app.use('/users', usersRoutes);
+app.use('/customers', usersRoutes);
 app.use('/partners', partnerRoutes);
 app.use('/products', productRoutes);
 app.use('/ticketCategories', ticketCategorieRoutes);

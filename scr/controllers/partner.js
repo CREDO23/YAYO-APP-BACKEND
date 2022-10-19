@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Partner = require('../models/partner');
 const utils = require('../utils/index');
-const bcrpt = require('bcrypt');
 const { partnerRegisterSchema } = require('../utils/schemasValidator');
 
 const getAllPartners = async (req, res, next) => {
@@ -83,9 +82,7 @@ const createPartner = async (req, res, next) => {
       throw createError.Conflict('This partner is already exist');
     }
 
-    const salt = await bcrpt.genSalt(10);
-    const password = await bcrpt.hash(result.password, salt);
-    const newPartner = new Partner({ ...result, password });
+    const newPartner = new Partner({ ...result });
 
     const savedPartner = await newPartner.save();
 

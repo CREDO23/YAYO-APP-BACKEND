@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Admin = require('../models/admin');
 const utils = require('../utils/index');
-const bcrpt = require('bcrypt');
 const { adminRegisterSchema } = require('../utils/schemasValidator');
 
 const getAllAdmins = async (req, res, next) => {
@@ -83,9 +82,7 @@ const createAdmin = async (req, res, next) => {
       throw createError.Conflict('This Admin is already exist');
     }
 
-    const salt = await bcrpt.genSalt(10);
-    const password = await bcrpt.hash(result.password, salt);
-    const newAdmin = new Admin({ ...result, password });
+    const newAdmin = new Admin({ ...result });
 
     const savedAdmin = await newAdmin.save();
 

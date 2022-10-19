@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Customer = require('../models/customer');
 const utils = require('../utils/index');
-const bcrpt = require('bcrypt');
 const { userRegisterSchema } = require('../utils/schemasValidator');
 
 const getAllUsers = async (req, res, next) => {
@@ -85,9 +84,7 @@ const createUser = async (req, res, next) => {
       throw createError.Conflict('This user is already exist');
     }
 
-    const salt = await bcrpt.genSalt(10);
-    const password = await bcrpt.hash(result.password, salt);
-    const newUser = new Customer({ ...result, password });
+    const newUser = new Customer({ ...result });
 
     const savedUser = await newUser.save();
 
