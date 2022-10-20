@@ -1,9 +1,14 @@
 const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Partner = require('../models/partner');
+const sendMail = require('../utils/email/sendEmail');
 const utils = require('../utils/index');
-const bcrpt = require('bcrypt');
-const { partnerRegisterSchema } = require('../utils/schemasValidator');
+const {
+  partnerRegisterSchema,
+} = require('../utils/validationSchemas/schemasValidator');
+
+// function (user, header, body, img, link, footer )
+const { genhtmlDoc } = require('../utils/html/generateHtmlDoc');
 
 const getAllPartners = async (req, res, next) => {
   try {
@@ -83,11 +88,20 @@ const createPartner = async (req, res, next) => {
       throw createError.Conflict('This partner is already exist');
     }
 
-    const salt = await bcrpt.genSalt(10);
-    const password = await bcrpt.hash(result.password, salt);
-    const newPartner = new Partner({ ...result, password });
+    const newPartner = new Partner({ ...result });
 
     const savedPartner = await newPartner.save();
+
+    const htmlDoc = await genhtmlDoc(
+      savedPartner?.userName,
+      'Welcome Back',
+      'We are happpy to meet you , welcome !',
+      'https://images.pexels.com/photos/5584156/pexels-photo-5584156.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      null,
+      'Thanks',
+    );
+
+    await sendMail(savedPartner.email, 'Welcome', htmlDoc);
 
     res.json({
       message: `Created successful`,

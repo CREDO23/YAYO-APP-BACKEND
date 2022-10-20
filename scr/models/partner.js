@@ -1,5 +1,5 @@
 const { Schema, default: mongoose } = require('mongoose');
-
+const bcrpt = require('bcrypt');
 const partnerSchema = new Schema(
   {
     role: {
@@ -65,7 +65,7 @@ const partnerSchema = new Schema(
       type: String,
       trim: true,
     },
-    shopBrandName: {
+    shopName: {
       type: String,
       trim: true,
       required: [true, 'The ShopBrandName must be filled out'],
@@ -73,11 +73,20 @@ const partnerSchema = new Schema(
     products: {
       type: [Schema.Types.ObjectId],
       ref: 'Product',
-      required: [true, 'The product must be filled out'],
     },
   },
   { timestamps: true },
 );
+
+partnerSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) next();
+  const salt = await bcrpt.genSalt(10);
+
+  const hashPassword = await bcrpt.hash(this.password, salt);
+
+  this.password = hashPassword;
+  next();
+});
 
 const Partner = mongoose.model('Partner', partnerSchema);
 

@@ -1,11 +1,12 @@
-const { loginVlidation } = require('../utils/schemasValidator');
-const { singAccessToken } = require('../utils/jwt');
+const {
+  loginVlidation,
+} = require('../utils/validationSchemas/schemasValidator');
+const { singAccessToken } = require('../utils/jwt/jwt');
 const createError = require('http-errors');
 const bcrpt = require('bcrypt');
 const Customer = require('../models/customer');
 const Partner = require('../models/partner');
 const Admin = require('../models/admin');
-
 const login = async (req, res, next) => {
   try {
     const result = await loginVlidation.validateAsync(req.body);
@@ -26,7 +27,7 @@ const login = async (req, res, next) => {
     const isMatchPassword = await bcrpt.compare(result.password, user.password);
 
     if (!isMatchPassword)
-      throw createError.Unauthorized('Invalid userName or password');
+      throw createError.BadRequest('Invalid userName or password');
 
     if (isMatchPassword) {
       const token = await singAccessToken(user.id, user.role);

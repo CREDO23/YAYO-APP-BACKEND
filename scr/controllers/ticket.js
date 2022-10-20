@@ -2,7 +2,9 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Ticket = require('../models/tickets');
 const utils = require('../utils/index');
-const { ticketRegSchema } = require('../utils/schemasValidator');
+const {
+  ticketRegSchema,
+} = require('../utils/validationSchemas/schemasValidator');
 
 const getAllTickets = async (req, res, next) => {
   try {

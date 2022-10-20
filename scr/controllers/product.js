@@ -2,7 +2,9 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Product = require('../models/product');
 const utils = require('../utils/index');
-const { productRegisterSchema } = require('../utils/schemasValidator');
+const {
+  productRegisterSchema,
+} = require('../utils/validationSchemas/schemasValidator');
 
 const getAllProducts = async (req, res, next) => {
   try {

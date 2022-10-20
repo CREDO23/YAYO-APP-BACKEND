@@ -1,9 +1,14 @@
 const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Admin = require('../models/admin');
+const sendMail = require('../utils/email/sendEmail');
 const utils = require('../utils/index');
-const bcrpt = require('bcrypt');
-const { adminRegisterSchema } = require('../utils/schemasValidator');
+const {
+  adminRegisterSchema,
+} = require('../utils/validationSchemas/schemasValidator');
+
+// function (user, header, body, img, link, footer )
+const { genhtmlDoc } = require('../utils/html/generateHtmlDoc');
 
 const getAllAdmins = async (req, res, next) => {
   try {
@@ -83,11 +88,20 @@ const createAdmin = async (req, res, next) => {
       throw createError.Conflict('This Admin is already exist');
     }
 
-    const salt = await bcrpt.genSalt(10);
-    const password = await bcrpt.hash(result.password, salt);
-    const newAdmin = new Admin({ ...result, password });
+    const newAdmin = new Admin({ ...result });
 
     const savedAdmin = await newAdmin.save();
+
+    const htmlDoc = await genhtmlDoc(
+      savedAdmin?.userName,
+      'Welcome Back',
+      'We are happpy to meet you , welcome !',
+      'https://images.pexels.com/photos/5584156/pexels-photo-5584156.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      null,
+      'Thanks',
+    );
+
+    await sendMail(savedAdmin.email, 'Welcome', htmlDoc);
 
     res.json({
       message: `Created successful`,

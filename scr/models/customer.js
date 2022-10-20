@@ -1,5 +1,5 @@
 const { Schema, default: mongoose } = require('mongoose');
-
+const bcrpt = require('bcrypt');
 const customerSchema = new Schema(
   {
     role: {
@@ -73,6 +73,16 @@ const customerSchema = new Schema(
   },
   { timestamps: true },
 );
+
+customerSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) next();
+  const salt = await bcrpt.genSalt(10);
+
+  const hashPassword = await bcrpt.hash(this.password, salt);
+
+  this.password = hashPassword;
+  next();
+});
 
 const Customer = mongoose.model('Customer', customerSchema);
 
