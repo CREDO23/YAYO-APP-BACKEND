@@ -2,8 +2,6 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const createError = require('http-errors');
-const app = express();
-const PORT = process.env.PORT || 3000;
 const loginRoute = require('./routes/login');
 const usersRoutes = require('./routes/customer');
 const partnerRoutes = require('./routes/partner');
@@ -13,6 +11,8 @@ const ticketRoutes = require('./routes/ticket');
 const adminRoutes = require('./routes/admin');
 dotenv.config();
 
+const app = express();
+const PORT = process.env.PORT || 3000;
 //Connection to dataase
 require('./configs/database');
 

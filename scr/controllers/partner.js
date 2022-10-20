@@ -2,7 +2,9 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Partner = require('../models/partner');
 const utils = require('../utils/index');
-const { partnerRegisterSchema } = require('../utils/schemasValidator');
+const {
+  partnerRegisterSchema,
+} = require('../utils/validationSchemas/schemasValidator');
 
 const getAllPartners = async (req, res, next) => {
   try {

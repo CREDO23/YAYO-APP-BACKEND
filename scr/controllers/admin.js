@@ -2,7 +2,9 @@ const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
 const Admin = require('../models/admin');
 const utils = require('../utils/index');
-const { adminRegisterSchema } = require('../utils/schemasValidator');
+const {
+  adminRegisterSchema,
+} = require('../utils/validationSchemas/schemasValidator');
 
 const getAllAdmins = async (req, res, next) => {
   try {

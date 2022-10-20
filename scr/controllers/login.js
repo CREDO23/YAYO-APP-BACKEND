@@ -1,5 +1,7 @@
-const { loginVlidation } = require('../utils/schemasValidator');
-const { singAccessToken } = require('../utils/jwt');
+const {
+  loginVlidation,
+} = require('../utils/validationSchemas/schemasValidator');
+const { singAccessToken } = require('../utils/jwt/jwt');
 const createError = require('http-errors');
 const bcrpt = require('bcrypt');
 const Customer = require('../models/customer');
