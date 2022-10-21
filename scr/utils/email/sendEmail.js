@@ -1,5 +1,4 @@
-const transporter = require('./transporter');
-require('dotenv').config({ path: '../../../.env' });
+const transporter = require('../../configs/mail/transport');
 
 const sendMail = (to, subject, html) => {
   const options = {
