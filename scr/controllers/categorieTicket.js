@@ -8,14 +8,35 @@ const {
 
 const getAllTicketCategorie = async (req, res, next) => {
   try {
-    const ticketCategories = await TicketCategorie.find().catch((error) =>
-      next(error),
-    );
+    const search = req?.query?.search || '';
+    const page = req?.query?.page || 1;
+    const pageSize = req?.query?.pageSize || 10;
+    const sort = req?.query?.sort || 'asc';
+
+    const totalDocument = await TicketCategorie.countDocuments();
+
+    const pageNumber = Math.ceil(totalDocument / pageSize);
+
+    const ticketCategories = await TicketCategorie.find()
+      .sort(sort)
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .catch((error) => next(error));
 
     if (ticketCategories == null || !ticketCategories[0]) {
       next(createError.NotFound('There are not Ticket categories yet'));
     } else if (ticketCategories) {
-      res.json({ data: ticketCategories, success: true, error: null });
+      res.json({
+        data: ticketCategories,
+        success: true,
+        error: null,
+        info: {
+          pageNumber,
+          totalDocuments: totalDocument,
+          searchQuery: search,
+          page,
+        },
+      });
     }
   } catch (error) {
     next(error);
