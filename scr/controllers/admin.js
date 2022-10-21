@@ -12,12 +12,35 @@ const { genhtmlDoc } = require('../utils/html/generateHtmlDoc');
 
 const getAllAdmins = async (req, res, next) => {
   try {
-    const admins = await Admin.find().catch((error) => next(error));
+    const search = req?.query?.search || '';
+    const page = req?.query?.page || 1;
+    const pageSize = req?.query?.pageSize || 10;
+    const sort = req?.query?.sort || 'asc';
+
+    const totalDocument = await Admin.countDocuments();
+
+    const pageNumber = Math.ceil(totalDocument / pageSize);
+
+    const admins = await Admin.find()
+      .sort(sort)
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .catch((error) => next(error));
 
     if (admins == null || !admins[0]) {
-      next(createError.NotFound('There are not Admins yet'));
+      next(createError.NotFound('Not found'));
     } else if (admins) {
-      res.json({ data: admins, success: true, error: null });
+      res.json({
+        data: admins,
+        success: true,
+        error: null,
+        info: {
+          pageNumber,
+          totalDocuments: totalDocument,
+          searchQuery: search,
+          page,
+        },
+      });
     }
   } catch (error) {
     next(error);

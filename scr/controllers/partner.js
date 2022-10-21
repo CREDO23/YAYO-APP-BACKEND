@@ -12,12 +12,35 @@ const { genhtmlDoc } = require('../utils/html/generateHtmlDoc');
 
 const getAllPartners = async (req, res, next) => {
   try {
-    const patners = await Partner.find().catch((error) => next(error));
+    const search = req?.query?.search || '';
+    const page = req?.query?.page || 1;
+    const pageSize = req?.query?.pageSize || 10;
+    const sort = req?.query?.sort || 'asc';
+
+    const totalDocument = await Partner.countDocuments();
+
+    const pageNumber = Math.ceil(totalDocument / pageSize);
+
+    const patners = await Partner.find()
+      .sort(sort)
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .catch((error) => next(error));
 
     if (patners == null || !patners[0]) {
-      next(createError.NotFound('There are not Partners yet'));
+      next(createError.NotFound('Not Found'));
     } else if (patners) {
-      res.json({ data: patners, success: true, error: null });
+      res.json({
+        data: patners,
+        success: true,
+        error: null,
+        info: {
+          pageNumber,
+          totalDocuments: totalDocument,
+          searchQuery: search,
+          page,
+        },
+      });
     }
   } catch (error) {
     next(error);

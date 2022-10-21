@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 //Connection to dataase
-require('./configs/database');
+require('./configs/database/database');
 
 //Middleware
 app.use(morgan(':method :url :status :response-time ms'));
