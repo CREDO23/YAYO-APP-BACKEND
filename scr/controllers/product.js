@@ -8,12 +8,35 @@ const {
 
 const getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.find().catch((error) => next(error));
+    const search = req?.query?.search || '';
+    const page = req?.query?.page || 1;
+    const pageSize = req?.query?.pageSize || 10;
+    const sort = req?.query?.sort || 'asc';
+
+    const totalDocument = await Product.countDocuments();
+
+    const pageNumber = Math.ceil(totalDocument / pageSize);
+
+    const products = await Product.find()
+      .sort(sort)
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .catch((error) => next(error));
 
     if (products == null || !products[0]) {
       next(createError.NotFound('There are not Products yet'));
     } else if (products) {
-      res.json({ data: products, success: true, error: null });
+      res.json({
+        data: products,
+        success: true,
+        error: null,
+        info: {
+          pageNumber,
+          totalDocuments: totalDocument,
+          searchQuery: search,
+          page,
+        },
+      });
     }
   } catch (error) {
     next(error);

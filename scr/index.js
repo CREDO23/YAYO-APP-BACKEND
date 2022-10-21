@@ -1,5 +1,5 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const deotenv = require('dotenv');
 const morgan = require('morgan');
 const createError = require('http-errors');
 const loginRoute = require('./routes/login');
@@ -9,10 +9,13 @@ const productRoutes = require('./routes/product');
 const ticketCategorieRoutes = require('./routes/ticketCategorie');
 const ticketRoutes = require('./routes/ticket');
 const adminRoutes = require('./routes/admin');
-dotenv.config();
+const auth = require('./middleware/authentification');
+
+deotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 //Connection to dataase
 require('./configs/database/database');
 
@@ -21,17 +24,20 @@ app.use(morgan(':method :url :status :response-time ms'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.status(200).json('App is running');
 });
+
+app.use(auth);
 
 app.use('/login', loginRoute);
 app.use('/customers', usersRoutes);
 app.use('/partners', partnerRoutes);
 app.use('/products', productRoutes);
 app.use('/ticketCategories', ticketCategorieRoutes);
-app.use('/ticketS', ticketRoutes);
+app.use('/tickets', ticketRoutes);
 app.use('/admins', adminRoutes);
+
 //Error handler
 app.use((req, res, next) => {
   next(createError.NotFound('Page Not Found'));
