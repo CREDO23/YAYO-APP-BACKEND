@@ -9,7 +9,7 @@ const productRoutes = require('./routes/product');
 const ticketCategorieRoutes = require('./routes/ticketCategorie');
 const ticketRoutes = require('./routes/ticket');
 const adminRoutes = require('./routes/admin');
-const auth = require('./middleware/authentification');
+const { auth } = require('./middleware/authentification');
 
 deotenv.config();
 
@@ -40,13 +40,13 @@ app.use('/admins', adminRoutes);
 
 //Error handler
 app.use((req, res, next) => {
-  next(createError.NotFound('Page Not Found'));
+  next(createError.NotFound('URL Not Found'));
 });
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.send({
+  res.json({
     message: err.message || 'Internal Server Error',
     data: null,
     success: false,

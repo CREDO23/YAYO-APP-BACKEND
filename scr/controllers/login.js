@@ -12,13 +12,13 @@ const login = async (req, res, next) => {
     const result = await loginVlidation.validateAsync(req.body);
 
     const user =
-      (await Customer.findOne({ userName: result.userName }).catch((error) =>
+      (await Customer.findOne({ userName: result.email }).catch((error) =>
         next(error),
       )) ||
-      (await Partner.findOne({ userName: result.userName }).catch((error) =>
+      (await Partner.findOne({ userName: result.email }).catch((error) =>
         next(error),
       )) ||
-      (await Admin.findOne({ userName: result.userName }).catch((error) =>
+      (await Admin.findOne({ userName: result.email }).catch((error) =>
         next(error),
       ));
 
