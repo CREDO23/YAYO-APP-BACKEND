@@ -3,6 +3,7 @@ const deotenv = require('dotenv');
 const morgan = require('morgan');
 const createError = require('http-errors');
 const loginRoute = require('./routes/login');
+const forgotPasswordRoutes = require('./routes/forgotPassword');
 const usersRoutes = require('./routes/customer');
 const partnerRoutes = require('./routes/partner');
 const productRoutes = require('./routes/product');
@@ -31,6 +32,7 @@ app.get('/', async (req, res) => {
 app.use(auth);
 
 app.use('/login', loginRoute);
+app.use('/password', forgotPasswordRoutes);
 app.use('/customers', usersRoutes);
 app.use('/partners', partnerRoutes);
 app.use('/products', productRoutes);

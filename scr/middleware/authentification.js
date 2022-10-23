@@ -15,6 +15,8 @@ module.exports = {
       '/tickets',
       '/ticketCategories',
       '/products',
+      '/password/forgot',
+      '/password/reset',
     ],
   }),
 
@@ -79,6 +81,18 @@ module.exports = {
         next(error);
       } else {
         req.userId = decoded.id;
+        next();
+      }
+    });
+  },
+  forgotPassMiddle: (req, res, next) => {
+    const token = req.body.token;
+
+    jwt.verify(token, process.env.RESET_PASSWORD_SECRET, (error, decoded) => {
+      if (error) {
+        next(error);
+      } else {
+        req.userName = decoded.userName;
         next();
       }
     });

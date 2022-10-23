@@ -17,19 +17,24 @@ const singAccessToken = (id, role) => {
   });
 };
 
-const singUpdatePasswordToken = () => {};
-
-const verifyToken = (token) => {
+const singUpdatePasswordToken = async (userName) => {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.PRIVATE_SECRET, (error, decoded) => {
-      if (error) reject(error);
-      resolve(decoded);
-    });
+    jwt.sign(
+      { userName },
+      process.env.RESET_PASSWORD_SECRET,
+      {
+        expiresIn: 60 * 5,
+      },
+      (error, token) => {
+        if (error) reject(error);
+
+        resolve(token);
+      },
+    );
   });
 };
 
 module.exports = {
   singAccessToken,
-  verifyToken,
   singUpdatePasswordToken,
 };
