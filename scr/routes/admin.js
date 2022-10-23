@@ -16,6 +16,6 @@ router.put('/update/:id', adminAuth, adminController.updateAdmin);
 router.post('/create', superAdminAuth, adminController.createAdmin);
 
 //delete admin
-router.delete('/delete/:id', superAdminAuth, adminController.deleteAdmin);
+router.delete('/delete/:id', adminAuth, adminController.deleteAdmin);
 
 module.exports = router;

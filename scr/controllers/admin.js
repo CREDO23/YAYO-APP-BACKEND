@@ -1,5 +1,7 @@
 const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
+const Customer = require('../models/customer');
+const Partner = require('../models/partner');
 const Admin = require('../models/admin');
 const sendMail = require('../utils/email/sendEmail');
 const utils = require('../utils/index');
@@ -49,18 +51,23 @@ const getAllAdmins = async (req, res, next) => {
 
 const getAdmin = async (req, res, next) => {
   const id = req.params.id;
+  const userId = req.userId;
 
   if (isValidObjectId(id)) {
-    try {
-      const admin = await Admin.findById(id).catch((error) => next(error));
+    if (id === userId) {
+      try {
+        const admin = await Admin.findById(id).catch((error) => next(error));
 
-      if (admin == null) {
-        next(createError.NotFound("This Admin doesn't exist"));
-      } else if (admin) {
-        res.json({ data: admin, success: true, error: null });
+        if (admin == null) {
+          next(createError.NotFound("This Admin doesn't exist"));
+        } else if (admin) {
+          res.json({ data: admin, success: true, error: null });
+        }
+      } catch (error) {
+        next(error);
       }
-    } catch (error) {
-      next(error);
+    } else {
+      next(createError.Unauthorized('Unauthorized'));
     }
   } else {
     next(createError.BadRequest('Invalid ID'));
@@ -70,26 +77,31 @@ const getAdmin = async (req, res, next) => {
 const updateAdmin = async (req, res, next) => {
   const id = req.params.id;
   const updated = req.body;
+  const userId = req.userId;
 
   if (isValidObjectId(id)) {
     if (!utils.isObjctEmpty(updated)) {
-      try {
-        const updatedAdmin = await Admin.findByIdAndUpdate(id, updated, {
-          new: true,
-        }).catch((error) => next(error));
+      if (id === userId) {
+        try {
+          const updatedAdmin = await Admin.findByIdAndUpdate(id, updated, {
+            new: true,
+          }).catch((error) => next(error));
 
-        if (updatedAdmin) {
-          res.json({
-            message: 'Updated successful',
-            data: updatedAdmin,
-            success: true,
-            error: null,
-          });
-        } else {
-          throw createError.NotFound("This Admin doesn't exist");
+          if (updatedAdmin) {
+            res.json({
+              message: 'Updated successful',
+              data: updatedAdmin,
+              success: true,
+              error: null,
+            });
+          } else {
+            throw createError.NotFound("This Admin doesn't exist");
+          }
+        } catch (error) {
+          next(error);
         }
-      } catch (error) {
-        next(error);
+      } else {
+        next(createError.Unauthorized('Unauthorized'));
       }
     } else {
       next(createError.NotAcceptable('Please , mention the fields to update'));
@@ -103,9 +115,16 @@ const createAdmin = async (req, res, next) => {
   try {
     const result = await adminRegisterSchema.validateAsync(req.body);
 
-    const isExist = await Admin.findOne({ userName: result.userName }).catch(
-      (error) => next(error),
-    );
+    const isExist =
+      (await Customer.findOne({ userName: result.userName }).catch((error) =>
+        next(error),
+      )) ||
+      (await Partner.findOne({ userName: result.userName }).catch((error) =>
+        next(error),
+      )) ||
+      (await Admin.findOne({ userName: result.userName }).catch((error) =>
+        next(error),
+      ));
 
     if (isExist) {
       throw createError.Conflict('This Admin is already exist');
@@ -140,24 +159,30 @@ const createAdmin = async (req, res, next) => {
 
 const deleteAdmin = async (req, res, next) => {
   const id = req.params.id;
-  if (isValidObjectId(id)) {
-    try {
-      const deletedAdmin = await Admin.findByIdAndDelete(id).catch((error) =>
-        next(error),
-      );
+  const userId = req.userId;
 
-      if (deletedAdmin) {
-        res.json({
-          message: 'Deleted successful',
-          data: deletedAdmin,
-          success: true,
-          error: null,
-        });
-      } else {
-        throw createError.NotFound("This Admin doesn't exist");
+  if (isValidObjectId(id)) {
+    if (id === userId) {
+      try {
+        const deletedAdmin = await Admin.findByIdAndDelete(id).catch((error) =>
+          next(error),
+        );
+
+        if (deletedAdmin) {
+          res.json({
+            message: 'Deleted successful',
+            data: deletedAdmin,
+            success: true,
+            error: null,
+          });
+        } else {
+          throw createError.NotFound("This Admin doesn't exist");
+        }
+      } catch (error) {
+        next(error);
       }
-    } catch (error) {
-      next(error);
+    } else {
+      next(createError.Unauthorized('Unauthorized'));
     }
   } else {
     next(createError.BadRequest('Invalid ID'));
