@@ -11,12 +11,12 @@ const genhtmlDoc = (user, header, body, img, link, footer) => {
                 </head>
                 <body>
                     <div>
-                        <h4>Hey ${user}!</h4>
-                        <h2>${header}</h2>
-                        <p>${body}</p>
-                        <img src=${img} alt="" />
-                        <a href=${link ? link : ''}></a>
-                        <em>${footer}</em>
+                        <h4>Hey ${user ? user : ''}!</h4>
+                        <h2>${header ? header : ''}</h2>
+                        <p>${body ? body : ''}</p>
+                        <a href=${link ? link : ''}>${link ? link : ''}</a>
+                        <img src=${img ? img : ''} alt="" />
+                        <em>${footer ? footer : ''}</em>
                     </div>    
                 </body>
                 </html>`);
