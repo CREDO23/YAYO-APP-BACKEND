@@ -17,6 +17,8 @@ const singAccessToken = (id, role) => {
   });
 };
 
+const singUpdatePasswordToken = () => {};
+
 const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.PRIVATE_SECRET, (error, decoded) => {
@@ -29,4 +31,5 @@ const verifyToken = (token) => {
 module.exports = {
   singAccessToken,
   verifyToken,
+  singUpdatePasswordToken,
 };

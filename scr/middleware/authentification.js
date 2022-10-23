@@ -31,7 +31,7 @@ module.exports = {
         req.userId = decoded.id;
         next();
       } else {
-        next(createError.NotAcceptable('Not allowed'));
+        next(createError.Unauthorized('Unauthorized'));
       }
     });
   },
@@ -46,7 +46,7 @@ module.exports = {
         req.userId = decoded.id;
         next();
       } else {
-        next(createError.NotAcceptable('Not allowed'));
+        next(createError.Unauthorized('Unauthorized'));
       }
     });
   },
@@ -66,7 +66,20 @@ module.exports = {
         req.userId = decoded.id;
         next();
       } else {
-        next(createError.NotAcceptable('Not allowed'));
+        next(createError.Unauthorized('Unauthorized'));
+      }
+    });
+  },
+
+  customersAuth: (req, res, next) => {
+    const token = req.headers?.authorization?.split(' ')[1];
+
+    jwt.verify(token, process.env.PRIVATE_SECRET, (error, decoded) => {
+      if (error) {
+        next(error);
+      } else {
+        req.userId = decoded.id;
+        next();
       }
     });
   },
