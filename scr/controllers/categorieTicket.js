@@ -1,33 +1,33 @@
 const createError = require('http-errors');
 const { isValidObjectId } = require('mongoose');
-const Product = require('../models/product');
+const TicketCategorie = require('../models/ticketCategorie');
 const utils = require('../utils/index');
 const {
-  productRegisterSchema,
+  ticketCategorieRegSchema,
 } = require('../utils/validationSchemas/schemasValidator');
 
-const getAllProducts = async (req, res, next) => {
+const getAllTicketCategorie = async (req, res, next) => {
   try {
     const search = req?.query?.search || '';
     const page = req?.query?.page || 1;
     const pageSize = req?.query?.pageSize || 10;
     const sort = req?.query?.sort || 'asc';
 
-    const totalDocument = await Product.countDocuments();
+    const totalDocument = await TicketCategorie.countDocuments();
 
     const pageNumber = Math.ceil(totalDocument / pageSize);
 
-    const products = await Product.find()
+    const ticketCategories = await TicketCategorie.find()
       .sort(sort)
       .limit(pageSize)
       .skip((page - 1) * pageSize)
       .catch((error) => next(error));
 
-    if (products == null || !products[0]) {
-      next(createError.NotFound('There are not Products yet'));
-    } else if (products) {
+    if (ticketCategories == null || !ticketCategories[0]) {
+      next(createError.NotFound('There are not Ticket categories yet'));
+    } else if (ticketCategories) {
       res.json({
-        data: products,
+        data: ticketCategories,
         success: true,
         error: null,
         info: {
@@ -43,17 +43,19 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
-const getProduct = async (req, res, next) => {
+const getTicketCategorie = async (req, res, next) => {
   const id = req.params.id;
 
   if (isValidObjectId(id)) {
     try {
-      const product = await Product.findById(id).catch((error) => next(error));
+      const ticketCategorie = await TicketCategorie.findById(id).catch(
+        (error) => next(error),
+      );
 
-      if (product == null) {
-        next(createError.NotFound("This Product doesn't exist"));
-      } else if (product) {
-        res.json({ data: product, success: true, error: null });
+      if (ticketCategorie == null) {
+        next(createError.NotFound("This Ticket categorie doesn't exist"));
+      } else if (ticketCategorie) {
+        res.json({ data: ticketCategorie, success: true, error: null });
       }
     } catch (error) {
       next(error);
@@ -63,26 +65,30 @@ const getProduct = async (req, res, next) => {
   }
 };
 
-const updateProduct = async (req, res, next) => {
+const updateTicketCategorie = async (req, res, next) => {
   const id = req.params.id;
   const updated = req.body;
 
   if (isValidObjectId(id)) {
     if (!utils.isObjctEmpty(updated)) {
       try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, updated, {
-          new: true,
-        }).catch((error) => next(error));
+        const updatedTicketCategorie = await TicketCategorie.findByIdAndUpdate(
+          id,
+          updated,
+          {
+            new: true,
+          },
+        ).catch((error) => next(error));
 
-        if (updatedProduct) {
+        if (updatedTicketCategorie) {
           res.json({
             message: 'Updated successful',
-            data: updatedProduct,
+            data: updatedTicketCategorie,
             success: true,
             error: null,
           });
         } else {
-          throw createError.NotFound("This Product doesn't exist");
+          throw createError.NotFound("This Ticket categorie doesn't exist");
         }
       } catch (error) {
         next(error);
@@ -95,25 +101,25 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-const createProduct = async (req, res, next) => {
+const createTicketCategorie = async (req, res, next) => {
   try {
-    const result = await productRegisterSchema.validateAsync(req.body);
+    const result = await ticketCategorieRegSchema.validateAsync(req.body);
 
-    const isExist = await Product.findOne({
+    const isExist = await TicketCategorie.findOne({
       brandName: result.brandName,
     }).catch((error) => next(error));
 
     if (isExist) {
-      throw createError.Conflict('This Product is already exist');
+      throw createError.Conflict('This Ticket categorie is already exist');
     }
 
-    const newPoduct = new Product({ ...result });
+    const newTicketCategorie = new TicketCategorie({ ...result });
 
-    const savedProduct = await newPoduct.save();
+    const savedTicketCategorie = await newTicketCategorie.save();
 
     res.json({
       message: `Created successful`,
-      data: savedProduct,
+      data: savedTicketCategorie,
       success: true,
       error: null,
     });
@@ -123,23 +129,23 @@ const createProduct = async (req, res, next) => {
   }
 };
 
-const deleteProduct = async (req, res, next) => {
+const deleteTicketCategorie = async (req, res, next) => {
   const id = req.params.id;
   if (isValidObjectId(id)) {
     try {
-      const deletedProduct = await Product.findByIdAndDelete(id).catch(
-        (error) => next(error),
-      );
+      const deletedTicketCategorie = await TicketCategorie.findByIdAndDelete(
+        id,
+      ).catch((error) => next(error));
 
-      if (deletedProduct) {
+      if (deletedTicketCategorie) {
         res.json({
           message: 'Deleted successful',
-          data: deletedProduct,
+          data: deletedTicketCategorie,
           success: true,
           error: null,
         });
       } else {
-        throw createError.NotFound("This Product doesn't exist");
+        throw createError.NotFound("This Ticket categorie doesn't exist");
       }
     } catch (error) {
       next(error);
@@ -150,9 +156,9 @@ const deleteProduct = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllProducts,
-  getProduct,
-  updateProduct,
-  createProduct,
-  deleteProduct,
+  getAllTicketCategorie,
+  getTicketCategorie,
+  updateTicketCategorie,
+  createTicketCategorie,
+  deleteTicketCategorie,
 };

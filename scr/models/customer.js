@@ -1,11 +1,15 @@
-const { Schema, default: mongoose } = require("mongoose");
-
+const { Schema, default: mongoose } = require('mongoose');
+const bcrpt = require('bcrypt');
 const customerSchema = new Schema(
   {
+    role: {
+      type: String,
+      default: 'customer',
+    },
     userName: {
       type: String,
-      unique: [true, "userName already exists"],
-      required: [true, "The userName must be filled out"],
+      unique: [true, 'userName already exists'],
+      required: [true, 'The userName must be filled out'],
       trim: true,
     },
     firstName: {
@@ -40,22 +44,22 @@ const customerSchema = new Schema(
     },
     email: {
       type: String,
-      required: [true, "The email must be filled out"],
+      required: [true, 'The email must be filled out'],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "The password must be filled out"],
+      required: [true, 'The password must be filled out'],
       trim: true,
     },
     tickets: {
       winings: {
         type: [Schema.Types.ObjectId],
-        ref: "Ticket",
+        ref: 'Ticket',
       },
       faillings: {
         type: [Schema.Types.ObjectId],
-        ref: "Ticket",
+        ref: 'Ticket',
       },
     },
     notifications: {
@@ -67,7 +71,19 @@ const customerSchema = new Schema(
       trim: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-module.exports = Customer = mongoose.model("Customer", customerSchema);
+customerSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) next();
+  const salt = await bcrpt.genSalt(10);
+
+  const hashPassword = await bcrpt.hash(this.password, salt);
+
+  this.password = hashPassword;
+  next();
+});
+
+const Customer = mongoose.model('Customer', customerSchema);
+
+module.exports = Customer;
