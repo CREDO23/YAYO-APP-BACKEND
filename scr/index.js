@@ -1,6 +1,7 @@
 const express = require('express');
 const deotenv = require('dotenv');
 const morgan = require('morgan');
+const cors = require('cors');
 const createError = require('http-errors');
 const loginRoute = require('./routes/login');
 const forgotPasswordRoutes = require('./routes/forgotPassword');
@@ -21,6 +22,7 @@ const PORT = process.env.PORT || 3000;
 require('./configs/database/database');
 
 //Middleware
+app.use(cors());
 app.use(morgan(':method :url :status :response-time ms'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
