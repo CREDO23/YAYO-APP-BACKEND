@@ -33,7 +33,10 @@ const login = async (req, res, next) => {
       const token = await singAccessToken(user.id, user.role);
       res.json({
         message: `Authentificate as ${user.email}`,
-        data: token,
+        data: {
+          accessToken: token,
+          user,
+        },
         success: true,
         error: null,
       });
