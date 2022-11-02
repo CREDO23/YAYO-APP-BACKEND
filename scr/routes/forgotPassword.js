@@ -4,6 +4,10 @@ const { forgotPassMiddle } = require('../middleware/authentification');
 
 router.post('/forgot', passwordController.forgotPassword);
 
-router.patch('/reset', forgotPassMiddle, passwordController.updatePassword);
+router.patch(
+  '/reset/:token',
+  forgotPassMiddle,
+  passwordController.updatePassword,
+);
 
 module.exports = router;
