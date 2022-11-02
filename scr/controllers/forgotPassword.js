@@ -16,25 +16,27 @@ const forgotPassword = async (req, res, next) => {
       (await Partner.findOne({ userName }).catch((error) => next(error))) ||
       (await Admin.findOne({ userName }).catch((error) => next(error)));
 
-    const token = await singUpdatePasswordToken(userName);
+    if (user) {
+      const token = await singUpdatePasswordToken(userName);
 
-    const htmlDoc = await genhtmlDoc(
-      '',
-      'Reset password',
-      'A password reset event as been triggered . <br/> <br/> The password window is limited to five minutes . <br/> <br/> To complete the password reset process , visit the following link :',
-      '',
-      `${process.env.FRONTEND_URL}/reset_password/${token}`,
-      'YAYO',
-    );
+      const htmlDoc = await genhtmlDoc(
+        '',
+        'Reset password',
+        'A password reset event as been triggered . <br/> <br/> The password window is limited to five minutes . <br/> <br/> To complete the password reset process , visit the following link :',
+        '',
+        `${process.env.FRONTEND_URL}/reset_password/${token}`,
+        'YAYO',
+      );
 
-    await sendEmail(user.email, 'Reset password', htmlDoc);
+      await sendEmail(user.email, 'Reset password', htmlDoc);
 
-    res.json({
-      message: 'Email sent',
-      data: null,
-      success: true,
-      error: null,
-    });
+      res.json({
+        message: 'Email sent',
+        data: null,
+        success: true,
+        error: null,
+      });
+    }
   } catch (error) {
     next(error);
   }
