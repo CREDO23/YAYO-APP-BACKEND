@@ -11,7 +11,7 @@ const forgotPassword = async (req, res, next) => {
   const userName = req.body.userName;
 
   try {
-    const { email } =
+    const user =
       (await Customer.findOne({ userName }).catch((error) => next(error))) ||
       (await Partner.findOne({ userName }).catch((error) => next(error))) ||
       (await Admin.findOne({ userName }).catch((error) => next(error)));
@@ -27,7 +27,7 @@ const forgotPassword = async (req, res, next) => {
       'YAYO',
     );
 
-    await sendEmail(email, 'Reset password', htmlDoc);
+    await sendEmail(user?.email, 'Reset password', htmlDoc);
 
     res.json({
       message: 'Email sent',
