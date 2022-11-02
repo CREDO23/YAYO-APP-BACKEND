@@ -16,7 +16,6 @@ module.exports = {
       '/ticketCategories',
       '/products',
       '/password/forgot',
-      '/password/reset',
     ],
   }),
 
@@ -85,8 +84,9 @@ module.exports = {
       }
     });
   },
+
   forgotPassMiddle: (req, res, next) => {
-    const token = req.params.token;
+    const token = req.headers?.authorization?.split(' ')[1];
 
     jwt.verify(token, process.env.RESET_PASSWORD_SECRET, (error, decoded) => {
       if (error) {
