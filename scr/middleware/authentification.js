@@ -16,6 +16,7 @@ module.exports = {
       '/ticketCategories',
       '/products',
       '/password/forgot',
+      '/password/reset',
     ],
   }),
 
