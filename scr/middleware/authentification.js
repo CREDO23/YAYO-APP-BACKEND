@@ -86,7 +86,7 @@ module.exports = {
     });
   },
   forgotPassMiddle: (req, res, next) => {
-    const token = req.body.token;
+    const token = req.params.token;
 
     jwt.verify(token, process.env.RESET_PASSWORD_SECRET, (error, decoded) => {
       if (error) {

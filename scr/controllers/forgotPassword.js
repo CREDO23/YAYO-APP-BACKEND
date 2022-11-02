@@ -23,7 +23,7 @@ const forgotPassword = async (req, res, next) => {
       'Reset password',
       'A password reset event as been triggered . <br/> <br/> The password window is limited to five minutes . <br/> <br/> To complete the password reset process , visit the following link :',
       '',
-      `${process.env.FRONTEND_URL}/reset_password/?t=${token}`,
+      `${process.env.FRONTEND_URL}/reset_password/${token}`,
       'YAYO',
     );
 
@@ -61,7 +61,6 @@ const updatePassword = async (req, res, next) => {
           { userName },
           { password: hash },
         );
-        console.log('customer');
         break;
 
       case 'partner':
@@ -69,7 +68,6 @@ const updatePassword = async (req, res, next) => {
           { userName },
           { password: hash },
         );
-        console.log('partner');
         break;
 
       case 'admin':
@@ -77,7 +75,6 @@ const updatePassword = async (req, res, next) => {
           { userName },
           { password: hash },
         );
-        console.log('admin');
         break;
 
       case 'superAdmin':
@@ -85,7 +82,6 @@ const updatePassword = async (req, res, next) => {
           { userName },
           { password: hash },
         );
-        console.log('superAdmin');
         break;
 
       default:
@@ -96,7 +92,7 @@ const updatePassword = async (req, res, next) => {
 
     if (updatedUser) {
       res.json({
-        message: 'Updated successful',
+        message: 'Password reseted successful',
         data: updatedUser,
         error: null,
         success: true,
