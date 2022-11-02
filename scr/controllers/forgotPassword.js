@@ -27,7 +27,7 @@ const forgotPassword = async (req, res, next) => {
       'YAYO',
     );
 
-    await sendEmail(user?.email, 'Reset password', htmlDoc);
+    await sendEmail(user.email, 'Reset password', htmlDoc);
 
     res.json({
       message: 'Email sent',
